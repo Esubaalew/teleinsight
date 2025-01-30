@@ -1,16 +1,17 @@
-import "./globals.css"
-import { Poppins } from "next/font/google"
-import { ThemeProvider } from "@/components/theme-provider"
-import Header from "@/components/Header"
-import Footer from "@/components/Footer"
-import { SpeedInsights } from "@vercel/speed-insights/next"
-import { Analytics } from "@vercel/analytics/react"
+import "./globals.css";
+import { Poppins } from "next/font/google";
+import { ThemeProvider } from "@/components/theme-provider";
+import Header from "@/components/Header";
+import Footer from "@/components/Footer";
+import { SpeedInsights } from "@vercel/speed-insights/next";
+import { Analytics } from "@vercel/analytics/react";
+import React, { ReactNode } from 'react';
 
 const poppins = Poppins({
   weight: ["400", "600", "700"],
   subsets: ["latin"],
   variable: "--font-poppins",
-})
+});
 
 export const metadata = {
   title: "TeleInsight - Powerful Telegram Chat Analyzer",
@@ -36,9 +37,13 @@ export const metadata = {
     site: "@teleinsight",
     cardType: "summary_large_image",
   },
+};
+
+interface RootLayoutProps {
+  children: ReactNode;
 }
 
-export default function RootLayout({ children }) {
+export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
@@ -56,6 +61,5 @@ export default function RootLayout({ children }) {
         </ThemeProvider>
       </body>
     </html>
-  )
+  );
 }
-

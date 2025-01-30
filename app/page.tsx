@@ -39,7 +39,13 @@ export default function Home() {
   )
 }
 
-function FeatureCard({ title, description }) {
+// Add interface for FeatureCard props
+interface FeatureCardProps {
+  title: string
+  description: string
+}
+
+function FeatureCard({ title, description }: FeatureCardProps) {
   return (
     <div className="bg-card text-card-foreground rounded-lg p-6 shadow-md">
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
