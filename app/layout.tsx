@@ -3,6 +3,8 @@ import { Poppins } from "next/font/google"
 import { ThemeProvider } from "@/components/theme-provider"
 import Header from "@/components/Header"
 import Footer from "@/components/Footer"
+import { SpeedInsights } from "@vercel/speed-insights/next"
+import { Analytics } from "@vercel/analytics/react"
 
 const poppins = Poppins({
   weight: ["400", "600", "700"],
@@ -47,6 +49,8 @@ export default function RootLayout({ children }) {
           <div className="flex flex-col min-h-screen">
             <Header />
             <main className="flex-grow">{children}</main>
+            <SpeedInsights />
+            <Analytics />
             <Footer />
           </div>
         </ThemeProvider>
