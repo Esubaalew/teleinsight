@@ -15,17 +15,43 @@ import MessageTypeAnalysis from "@/components/MessageTypeAnalysis"
 import ReactionAnalysis from "@/components/ReactionAnalysis"
 
 export default function AnalyzePage() {
-  const [jsonData, setJsonData] = useState(null)
+  const [jsonData, setJsonData] = useState<JsonData | null>(null)
   const [isLoading, setIsLoading] = useState(false)
 
-  const handleFileUpload = (event) => {
-    const file = event.target.files[0]
+  interface Message {
+    id: string
+    text: string
+    date: string
+    from_id?: string
+    to_id?: string
+    reply_to_message_id?: number
+    forwarded_from?: string
+    edited?: boolean
+    reactions?: Reaction[]
+    // Add other properties as needed
+  }
+
+  interface JsonData {
+    name?: string
+    type?: string
+    id?: string
+    messages: Message[]
+  }
+
+  interface Reaction {
+    emoji: string
+    type: string
+    count: number
+  }
+
+  const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>): void => {
+    const file = event.target.files?.[0]
     if (file) {
       setIsLoading(true)
       const reader = new FileReader()
-      reader.onload = (e) => {
+      reader.onload = (e: ProgressEvent<FileReader>): void => {
         try {
-          const json = JSON.parse(e.target.result as string)
+          const json: JsonData = JSON.parse(e.target?.result as string)
           setJsonData(json)
         } catch (error) {
           console.error("Error parsing JSON:", error)
