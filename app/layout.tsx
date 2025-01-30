@@ -22,7 +22,7 @@ export const metadata = {
     site_name: "TeleInsight",
     images: [
       {
-        url: "https://telegram.esube.com.et/og-image.jpg",
+        url: "https://telegram.esube.com.et/og-image.png",
         width: 1200,
         height: 630,
         alt: "TeleInsight - Powerful Telegram Chat Analyzer",
