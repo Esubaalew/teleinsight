@@ -1,19 +1,39 @@
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 
-export default function ReactionAnalysis({ data }) {
-  const reactionCounts = {}
+interface Reaction {
+  emoji: string
+  count: number
+}
+
+interface ChatMessage {
+  reactions?: Reaction[]
+}
+
+interface ReactionAnalysisProps {
+  data: {
+    messages: ChatMessage[]
+  }
+}
+
+interface ChartDataItem {
+  emoji: string
+  count: number
+}
+
+export default function ReactionAnalysis({ data }: ReactionAnalysisProps) {
+  const reactionCounts: Record<string, number> = {}
 
   data.messages.forEach((message) => {
     if (message.reactions) {
-      message.reactions.forEach((reaction) => {
+      message.reactions.forEach((reaction: Reaction) => {
         const emoji = reaction.emoji
         reactionCounts[emoji] = (reactionCounts[emoji] || 0) + reaction.count
       })
     }
   })
 
-  const chartData = Object.entries(reactionCounts)
+  const chartData: ChartDataItem[] = Object.entries(reactionCounts)
     .map(([emoji, count]) => ({ emoji, count }))
     .sort((a, b) => b.count - a.count)
     .slice(0, 10)
@@ -32,11 +52,23 @@ export default function ReactionAnalysis({ data }) {
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData}>
               <CartesianGrid strokeDasharray="3 3" />
-              <XAxis dataKey="emoji" />
-              <YAxis />
-              <Tooltip />
+              <XAxis 
+                dataKey="emoji" 
+                type="category"  // Add type specification for categorical data
+                tick={{ fontSize: 14 }}
+              />
+              <YAxis type="number" />
+              <Tooltip 
+                formatter={(value: number) => [value, 'Total Reactions']}
+                labelStyle={{ fontWeight: 'bold' }}
+              />
               <Legend />
-              <Bar dataKey="count" fill="#8884d8" />
+              <Bar 
+                dataKey="count" 
+                fill="#8884d8" 
+                name="Reaction Count"
+                maxBarSize={40}
+              />
             </BarChart>
           </ResponsiveContainer>
         </div>
@@ -46,7 +78,7 @@ export default function ReactionAnalysis({ data }) {
             {chartData.map(({ emoji, count }) => (
               <li key={emoji} className="bg-secondary p-2 rounded-lg flex justify-between items-center">
                 <span className="text-2xl">{emoji}</span>
-                <span>{count}</span>
+                <span className="font-medium">{count.toLocaleString()}</span>
               </li>
             ))}
           </ul>
@@ -55,4 +87,3 @@ export default function ReactionAnalysis({ data }) {
     </Card>
   )
 }
-

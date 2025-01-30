@@ -2,29 +2,48 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts"
 import { Avatar } from "@/components/ui/avatar"
 
-export default function ForwardedMessages({ data }) {
-  const forwardedMessages = data.messages.filter((message) => message.forwarded_from && message.from) // Filter messages with both fields
-  const forwarderCounts = forwardedMessages.reduce((acc, message) => {
-    const forwarder = message.from
-    acc[forwarder] = (acc[forwarder] || 0) + 1
-    return acc
-  }, {})
+interface ChatMessage {
+  forwarded_from?: string;
+  from?: string;
+}
 
-  const chartData = Object.entries(forwarderCounts)
+interface ForwardedMessagesProps {
+  data: {
+    messages: ChatMessage[];
+  };
+}
+
+interface ChartDataItem {
+  name: string;
+  count: number;
+}
+
+const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"] as const;
+
+export default function ForwardedMessages({ data }: ForwardedMessagesProps) {
+  const forwardedMessages = data.messages.filter((message) => 
+    message.forwarded_from && message.from
+  );
+
+  const forwarderCounts = forwardedMessages.reduce((acc: Record<string, number>, message) => {
+    const forwarder = message.from!; // Non-null assertion since we filtered messages with `from`
+    acc[forwarder] = (acc[forwarder] || 0) + 1;
+    return acc;
+  }, {});
+
+  const chartData: ChartDataItem[] = Object.entries(forwarderCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 5)
-    .map(([name, count]) => ({ name, count }))
+    .map(([name, count]) => ({ name, count }));
 
-  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"]
-
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF"
-    let color = "#"
+  const getRandomColor = (): string => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
     for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)]
+      color += letters[Math.floor(Math.random() * 16)];
     }
-    return color
-  }
+    return color;
+  };
 
   return (
     <Card>
@@ -48,9 +67,11 @@ export default function ForwardedMessages({ data }) {
                 outerRadius={80}
                 fill="#8884d8"
                 dataKey="count"
-                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+                label={({ name, percent }: { name: string; percent: number }) => 
+                  `${name} ${(percent * 100).toFixed(0)}%`
+                }
               >
-                {chartData.map((entry, index) => (
+                {chartData.map((_, index) => (
                   <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
                 ))}
               </Pie>
@@ -64,7 +85,10 @@ export default function ForwardedMessages({ data }) {
           <ul className="space-y-2">
             {chartData.map((forwarder, index) => (
               <li key={index} className="flex items-center bg-secondary rounded-lg p-2 md:p-3">
-                <Avatar className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4" style={{ backgroundColor: getRandomColor() }}>
+                <Avatar 
+                  className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4" 
+                  style={{ backgroundColor: getRandomColor() }}
+                >
                   {forwarder.name.charAt(0).toUpperCase()}
                 </Avatar>
                 <span className="font-medium truncate flex-grow">{forwarder.name}</span>
@@ -77,4 +101,3 @@ export default function ForwardedMessages({ data }) {
     </Card>
   )
 }
-

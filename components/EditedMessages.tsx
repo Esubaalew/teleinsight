@@ -2,29 +2,44 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { Avatar } from "@/components/ui/avatar"
 
-export default function EditedMessages({ data }) {
-  const editedCounts = data.messages.reduce((acc, message) => {
-    if (message.edited && message.from) {
-      // Check both fields
-      const editor = message.from
-      acc[editor] = (acc[editor] || 0) + 1
-    }
-    return acc
-  }, {})
+interface ChatMessage {
+  edited?: boolean;
+  from?: string;
+}
 
-  const chartData = Object.entries(editedCounts)
+interface EditedMessagesProps {
+  data: {
+    messages: ChatMessage[];
+  };
+}
+
+interface ChartDataItem {
+  name: string;
+  count: number;
+}
+
+export default function EditedMessages({ data }: EditedMessagesProps) {
+  const editedCounts = data.messages.reduce((acc: Record<string, number>, message) => {
+    if (message.edited && message.from) {
+      const editor = message.from;
+      acc[editor] = (acc[editor] || 0) + 1;
+    }
+    return acc;
+  }, {});
+
+  const chartData: ChartDataItem[] = Object.entries(editedCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 10)
-    .map(([name, count]) => ({ name, count }))
+    .map(([name, count]) => ({ name, count }));
 
-  const getRandomColor = () => {
-    const letters = "0123456789ABCDEF"
-    let color = "#"
+  const getRandomColor = (): string => {
+    const letters = "0123456789ABCDEF";
+    let color = "#";
     for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)]
+      color += letters[Math.floor(Math.random() * 16)];
     }
-    return color
-  }
+    return color;
+  };
 
   return (
     <Card>
@@ -53,7 +68,10 @@ export default function EditedMessages({ data }) {
           <ul className="space-y-2">
             {chartData.map((editor, index) => (
               <li key={index} className="flex items-center bg-secondary rounded-lg p-2 md:p-3">
-                <Avatar className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4" style={{ backgroundColor: getRandomColor() }}>
+                <Avatar 
+                  className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4" 
+                  style={{ backgroundColor: getRandomColor() }}
+                >
                   {editor.name.charAt(0).toUpperCase()}
                 </Avatar>
                 <span className="font-medium truncate flex-grow">{editor.name}</span>
@@ -66,4 +84,3 @@ export default function EditedMessages({ data }) {
     </Card>
   )
 }
-

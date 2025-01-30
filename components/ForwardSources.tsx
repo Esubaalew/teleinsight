@@ -2,20 +2,35 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
 import { Avatar } from "@/components/ui/avatar"
 
-export default function ForwardSources({ data }) {
-  const forwardSourceCounts = data.messages.reduce((acc, message) => {
+interface ChatMessage {
+  forwarded_from?: string;
+}
+
+interface ForwardSourcesProps {
+  data: {
+    messages: ChatMessage[];
+  };
+}
+
+interface ChartDataItem {
+  name: string;
+  count: number;
+}
+
+export default function ForwardSources({ data }: ForwardSourcesProps) {
+  const forwardSourceCounts = data.messages.reduce((acc: Record<string, number>, message) => {
     if (message.forwarded_from) {
       acc[message.forwarded_from] = (acc[message.forwarded_from] || 0) + 1
     }
     return acc
   }, {})
 
-  const chartData = Object.entries(forwardSourceCounts)
+  const chartData: ChartDataItem[] = Object.entries(forwardSourceCounts)
     .sort((a, b) => b[1] - a[1])
     .slice(0, 10)
     .map(([name, count]) => ({ name, count }))
 
-  const getRandomColor = () => {
+  const getRandomColor = (): string => {
     const letters = "0123456789ABCDEF"
     let color = "#"
     for (let i = 0; i < 6; i++) {
@@ -52,7 +67,10 @@ export default function ForwardSources({ data }) {
           <ul className="space-y-2">
             {chartData.map((source, index) => (
               <li key={index} className="flex items-center bg-secondary rounded-lg p-2 md:p-3">
-                <Avatar className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4" style={{ backgroundColor: getRandomColor() }}>
+                <Avatar 
+                  className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4" 
+                  style={{ backgroundColor: getRandomColor() }}
+                >
                   {source.name.charAt(0).toUpperCase()}
                 </Avatar>
                 <span className="font-medium truncate flex-grow">{source.name}</span>
@@ -65,4 +83,3 @@ export default function ForwardSources({ data }) {
     </Card>
   )
 }
-

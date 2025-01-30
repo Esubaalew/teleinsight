@@ -4,178 +4,67 @@ import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, ResponsiveContaine
 import { Button } from "@/components/ui/button"
 import { Eye, EyeOff } from "lucide-react"
 
-const STOPWORDS = new Set([
-  "a",
-  "an",
-  "the",
-  "and",
-  "or",
-  "but",
-  "if",
-  "is",
-  "are",
-  "was",
-  "were",
-  "be",
-  "been",
-  "being",
-  "have",
-  "has",
-  "had",
-  "do",
-  "does",
-  "did",
-  "will",
-  "would",
-  "should",
-  "can",
-  "could",
-  "of",
-  "at",
-  "by",
-  "for",
-  "with",
-  "about",
-  "to",
-  "from",
-  "in",
-  "on",
-  "that",
-  "this",
-  "these",
-  "those",
-  "you",
-  "me",
-  "my",
-  "your",
-  "we",
-  "our",
-  "us",
-  "they",
-  "their",
-  "it",
-  "its",
-  "he",
-  "she",
-  "him",
-  "her",
-  "http",
-  "https",
-  "com",
-  "www",
-  "rt",
-  "like",
-  "just",
-  "so",
-  "than",
-  "then",
-  "when",
-  "how",
-  "what",
-  "which",
-  "who",
-  "where",
-  "why",
-  "there",
-  "here",
-  "chat",
-  "telegram",
-  "message",
-  "messages",
-  "media",
-  "omitted",
-  "missed",
-  "call",
-  "video",
-  "audio",
-  "not",
-  "no",
-  "yes",
-  "okay",
-  "ok",
-  "hey",
-  "hi",
-  "hello",
-  "oh",
-  "uh",
-  "um",
-  "ah",
-  "ha",
-  "lol",
-  "haha",
-  "please",
-  "maybe",
-  "actually",
-  "really",
-  "very",
-  "too",
-  "much",
-  "many",
-  "some",
-  "any",
-  "up",
-  "down",
-  "out",
-  "off",
-  "over",
-  "under",
-  "again",
-  "further",
-  "said",
-  "say",
-  "says",
-  "more",
-  "most",
-  "such",
-  "only",
-  "into",
-  "through",
-  "during",
-  "before",
-  "after",
-  "above",
-  "below",
-  "between",
-  "both",
-  "each",
-  "few",
-  "same",
-  "see",
-  "saw",
-  "get",
-  "got",
-  "im",
-  "dont",
-  "dont",
-  "thats",
-  "theyre",
-  "youre",
-  "arent",
-  "isnt",
-  "wont",
-  "cant",
-  "shouldnt",
-])
+type MessageContent = string | { text: MessageContent } | MessageContent[]
 
-const extractText = (content) => {
+interface ChatMessage {
+  text: MessageContent
+}
+
+interface CommonWordsProps {
+  data: {
+    messages: ChatMessage[]
+  }
+}
+
+const STOPWORDS = new Set([
+  "a", "an", "the", "and", "or", "but", "if", "is", "are", "was", 
+  "were", "be", "been", "being", "have", "has", "had", "do", "does", 
+  "did", "will", "would", "should", "can", "could", "of", "at", "by", 
+  "for", "with", "about", "to", "from", "in", "on", "that", "this", 
+  "these", "those", "you", "me", "my", "your", "we", "our", "us", 
+  "they", "their", "it", "its", "he", "she", "him", "her", "http", 
+  "https", "com", "www", "rt", "like", "just", "so", "than", "then", 
+  "when", "how", "what", "which", "who", "where", "why", "there", 
+  "here", "chat", "telegram", "message", "messages", "media", "omitted", 
+  "missed", "call", "video", "audio", "not", "no", "yes", "okay", "ok", 
+  "hey", "hi", "hello", "oh", "uh", "um", "ah", "ha", "lol", "haha", 
+  "please", "maybe", "actually", "really", "very", "too", "much", "many", 
+  "some", "any", "up", "down", "out", "off", "over", "under", "again", 
+  "further", "said", "say", "says", "more", "most", "such", "only", "into", 
+  "through", "during", "before", "after", "above", "below", "between", 
+  "both", "each", "few", "same", "see", "saw", "get", "got", "im", "dont", 
+  "dont", "thats", "theyre", "youre", "arent", "isnt", "wont", "cant", "shouldnt"
+]) as Set<string>
+
+const extractText = (content: MessageContent): string => {
   if (typeof content === "string") return content
   if (Array.isArray(content)) {
-    return content.map((item) => item.text || extractText(item)).join(" ")
+    return content.map((item) => {
+      if (typeof item === "object" && item !== null && "text" in item) {
+        return extractText(item.text)
+      }
+      return extractText(item)
+    }).join(" ")
+  }
+  if (typeof content === "object" && content !== null && "text" in content) {
+    return extractText(content.text)
   }
   return ""
 }
 
-export default function CommonWords({ data }) {
+export default function CommonWords({ data }: CommonWordsProps) {
   const [showFilterCriteria, setShowFilterCriteria] = useState(false)
 
-  const wordCounts = data.messages.reduce((acc, message) => {
+  const wordCounts = data.messages.reduce((acc: Record<string, number>, message) => {
     const rawText = extractText(message.text)
     const cleanedText = rawText
       .toLowerCase()
       .replace(/[^\w\s]|_/g, "")
       .replace(/\s+/g, " ")
 
-    const words = cleanedText.split(/\s+/).filter((word) => word.length > 3 && !STOPWORDS.has(word) && !/\d/.test(word))
+    const words = cleanedText.split(/\s+/).filter((word) => 
+      word.length > 3 && !STOPWORDS.has(word) && !/\d/.test(word)
+    )
 
     words.forEach((word) => {
       acc[word] = (acc[word] || 0) + 1
@@ -239,7 +128,7 @@ export default function CommonWords({ data }) {
                 }}
               />
               <YAxis dataKey="word" type="category" tick={{ fontSize: 12 }} width={200} />
-              <Tooltip formatter={(value) => [value, "Occurrences"]} labelStyle={{ fontWeight: "bold" }} />
+              <Tooltip formatter={(value: number) => [value, "Occurrences"]} labelStyle={{ fontWeight: "bold" }} />
               <Bar dataKey="count" fill="#8884d8" name="Word Frequency" maxBarSize={40} />
             </BarChart>
           </ResponsiveContainer>
@@ -263,4 +152,3 @@ export default function CommonWords({ data }) {
     </Card>
   )
 }
-

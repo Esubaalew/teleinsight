@@ -11,7 +11,7 @@ const Manygils = () => {
   useEffect(() => {
     const checkScreenWidth = () => {
       if (window.innerWidth < 768) {
-        // Redirect to /desktop-only if the screen width is less than 768px
+
         router.push('/desktop-only');
       }
     };
@@ -24,7 +24,7 @@ const Manygils = () => {
     };
   }, [router]);
 
-  return null; // This component doesn't render anything visible
+  return null; 
 };
 
 export default Manygils;
