@@ -14,7 +14,7 @@ export default function Footer() {
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="https://telegram.esube.com.et/" className="text-gray-400 hover:text-white">
+                <Link href="/" className="text-gray-400 hover:text-white">
                   Home
                 </Link>
               </li>
@@ -24,12 +24,12 @@ export default function Footer() {
                 </Link>
               </li>
               <li>
-                <Link href="https://telegram.esube.com.et/#" className="text-gray-400 hover:text-white">
+                <Link href="/about" className="text-gray-400 hover:text-white">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="https://telegram.esube.com.et/#" className="text-gray-400 hover:text-white">
+                <Link href="/privacy" className="text-gray-400 hover:text-white">
                   Privacy Policy
                 </Link>
               </li>
