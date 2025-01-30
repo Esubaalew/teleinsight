@@ -6,6 +6,8 @@ import Footer from "@/components/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
 import React, { ReactNode } from 'react';
+import Manygils from '../components/manygils';
+
 
 const poppins = Poppins({
   weight: ["400", "600", "700"],
@@ -54,6 +56,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
           <div className="flex flex-col min-h-screen">
             <Header />
             <main className="flex-grow">{children}</main>
+            <Manygils />
             <SpeedInsights />
             <Analytics />
             <Footer />
