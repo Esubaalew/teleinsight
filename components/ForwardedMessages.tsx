@@ -1,0 +1,80 @@
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
+import { PieChart, Pie, Cell, ResponsiveContainer, Tooltip, Legend } from "recharts"
+import { Avatar } from "@/components/ui/avatar"
+
+export default function ForwardedMessages({ data }) {
+  const forwardedMessages = data.messages.filter((message) => message.forwarded_from && message.from) // Filter messages with both fields
+  const forwarderCounts = forwardedMessages.reduce((acc, message) => {
+    const forwarder = message.from
+    acc[forwarder] = (acc[forwarder] || 0) + 1
+    return acc
+  }, {})
+
+  const chartData = Object.entries(forwarderCounts)
+    .sort((a, b) => b[1] - a[1])
+    .slice(0, 5)
+    .map(([name, count]) => ({ name, count }))
+
+  const COLORS = ["#0088FE", "#00C49F", "#FFBB28", "#FF8042", "#8884D8"]
+
+  const getRandomColor = () => {
+    const letters = "0123456789ABCDEF"
+    let color = "#"
+    for (let i = 0; i < 6; i++) {
+      color += letters[Math.floor(Math.random() * 16)]
+    }
+    return color
+  }
+
+  return (
+    <Card>
+      <CardHeader>
+        <CardTitle>Forwarded Messages Analysis</CardTitle>
+      </CardHeader>
+      <CardContent>
+        <p className="mb-4">
+          This chart shows the distribution of forwarded messages by user. It helps identify which users are sharing the
+          most content from other sources.
+        </p>
+        <p className="mb-4">Total forwarded messages: {forwardedMessages.length}</p>
+        <div className="mb-6 h-[300px] md:h-[400px]">
+          <ResponsiveContainer width="100%" height="100%">
+            <PieChart>
+              <Pie
+                data={chartData}
+                cx="50%"
+                cy="50%"
+                labelLine={false}
+                outerRadius={80}
+                fill="#8884d8"
+                dataKey="count"
+                label={({ name, percent }) => `${name} ${(percent * 100).toFixed(0)}%`}
+              >
+                {chartData.map((entry, index) => (
+                  <Cell key={`cell-${index}`} fill={COLORS[index % COLORS.length]} />
+                ))}
+              </Pie>
+              <Tooltip />
+              <Legend />
+            </PieChart>
+          </ResponsiveContainer>
+        </div>
+        <div>
+          <h3 className="text-lg md:text-xl font-semibold mb-4">Top Forwarders</h3>
+          <ul className="space-y-2">
+            {chartData.map((forwarder, index) => (
+              <li key={index} className="flex items-center bg-secondary rounded-lg p-2 md:p-3">
+                <Avatar className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4" style={{ backgroundColor: getRandomColor() }}>
+                  {forwarder.name.charAt(0).toUpperCase()}
+                </Avatar>
+                <span className="font-medium truncate flex-grow">{forwarder.name}</span>
+                <span className="ml-2 whitespace-nowrap">{forwarder.count} forwarded messages</span>
+              </li>
+            ))}
+          </ul>
+        </div>
+      </CardContent>
+    </Card>
+  )
+}
+
