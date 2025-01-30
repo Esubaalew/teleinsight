@@ -13,34 +13,7 @@ export default function Header() {
           <span className="text-2xl font-bold text-primary">TeleInsight</span>
         </Link>
         <nav className="flex items-center space-x-4">
-          <Link href="/" className="text-foreground hover:text-primary">
-            Home
-          </Link>
-          <Link href="/analyze" className="text-foreground hover:text-primary">
-            Analyze
-          </Link>
-          <Link href="/about" className="text-foreground hover:text-primary">
-            About
-          </Link>
-          <Link href="/privacy" className="text-foreground hover:text-primary">
-            Privacy
-          </Link>
-          <a
-            href="https://github.com/esubaalew"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-foreground hover:text-primary"
-          >
-            <Github size={20} />
-          </a>
-          <a
-            href="https://linkedin.com/in/esubaalew"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="text-foreground hover:text-primary"
-          >
-            <Linkedin size={20} />
-          </a>
+       
           <ThemeToggle />
           <Button asChild>
             <Link href="/analyze">Start Analysis</Link>
