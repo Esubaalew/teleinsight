@@ -2,6 +2,7 @@ import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Avatar } from "@/components/ui/avatar";
 
+// Define interfaces for type safety
 interface Message {
   text?: string;
   sticker?: any;
@@ -22,12 +23,24 @@ interface ReplyAnalysisProps {
   };
 }
 
+interface ReplierData {
+  total: number;
+  text: number;
+  sticker: number;
+  photo: number;
+  video: number;
+  voice: number;
+  audio: number;
+  document: number;
+  gif: number;
+  videoMessage: number;
+}
+
 export default function ReplyAnalysis({ data }: ReplyAnalysisProps) {
   // Step 1: Count replies per user with detailed message type breakdown
   const replyCounts = data.messages.reduce((acc, message) => {
     if (message.reply_to_message_id && message.from) {
       const replier = message.from;
-
       // Initialize counts for the replier if not already present
       if (!acc[replier]) {
         acc[replier] = {
@@ -43,10 +56,8 @@ export default function ReplyAnalysis({ data }: ReplyAnalysisProps) {
           videoMessage: 0,
         };
       }
-
       // Increment total replies
       acc[replier].total++;
-
       // Classify message types
       if (message.text && message.text !== "") acc[replier].text++;
       if (message.photo) acc[replier].photo++;
@@ -88,15 +99,20 @@ export default function ReplyAnalysis({ data }: ReplyAnalysisProps) {
       }
     }
     return acc;
-  }, {} as Record<string, { total: number; text: number; sticker: number; photo: number; video: number; voice: number; audio: number; document: number; gif: number; videoMessage: number }>);
+  }, {} as Record<string, ReplierData>);
 
   // Step 2: Prepare chart data by sorting and slicing top 10 repliers
   const chartData = Object.entries(replyCounts)
     .sort((a, b) => b[1].total - a[1].total)
-    .slice(0, 10)
+    .slice(0, 10) // Limit to top 10 for the chart
     .map(([name, counts]) => ({ name, ...counts }));
 
-  // Step 3: Generate random color for avatars
+  // Step 3: Prepare full list of repliers (all users for the scrollable list)
+  const allRepliers = Object.entries(replyCounts)
+    .sort((a, b) => b[1].total - a[1].total) // Sort by total replies descending
+    .map(([name, counts]) => ({ name, ...counts }));
+
+  // Step 4: Generate random color for avatars
   const getRandomColor = () => {
     const letters = "0123456789ABCDEF";
     let color = "#";
@@ -116,7 +132,6 @@ export default function ReplyAnalysis({ data }: ReplyAnalysisProps) {
           This chart shows the users who reply the most in the chat. It helps identify the most responsive and engaged
           participants in the conversation.
         </p>
-
         {/* Bar Chart */}
         <div className="mb-6 h-[300px] md:h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
@@ -130,38 +145,39 @@ export default function ReplyAnalysis({ data }: ReplyAnalysisProps) {
             </BarChart>
           </ResponsiveContainer>
         </div>
-
-        {/* Top Repliers List */}
+        {/* Full List of Repliers */}
         <div>
-          <h3 className="text-lg md:text-xl font-semibold mb-4">Top Repliers</h3>
-          <ul className="space-y-2">
-            {chartData.map((replier, index) => (
-              <li key={index} className="bg-secondary rounded-lg p-2 md:p-3">
-                <div className="flex items-center mb-2">
-                  <Avatar
-                    className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4"
-                    style={{ backgroundColor: getRandomColor() }}
-                  >
-                    {replier.name.charAt(0).toUpperCase()}
-                  </Avatar>
-                  <span className="font-medium truncate flex-grow">{replier.name}</span>
-                  <span className="ml-2 whitespace-nowrap">{replier.total} replies</span>
-                </div>
-                <div className="grid grid-cols-2 gap-2 text-xs">
-                  {Object.entries(replier).map(([type, count]) => {
-                    if (type !== "name" && type !== "total") {
-                      return (
-                        <div key={type} className="flex justify-between">
-                          <span className="capitalize">{type}:</span>
-                          <span>{count}</span>
-                        </div>
-                      );
-                    }
-                  })}
-                </div>
-              </li>
-            ))}
-          </ul>
+          <h3 className="text-lg md:text-xl font-semibold mb-4">All Repliers</h3>
+          <div className="max-h-[400px] overflow-y-auto border rounded-lg p-2">
+            <ul className="space-y-2">
+              {allRepliers.map((replier, index) => (
+                <li key={index} className="bg-secondary rounded-lg p-2 md:p-3">
+                  <div className="flex items-center mb-2">
+                    <Avatar
+                      className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4"
+                      style={{ backgroundColor: getRandomColor() }}
+                    >
+                      {replier.name.charAt(0).toUpperCase()}
+                    </Avatar>
+                    <span className="font-medium truncate flex-grow">{replier.name}</span>
+                    <span className="ml-2 whitespace-nowrap">{replier.total} replies</span>
+                  </div>
+                  <div className="grid grid-cols-2 gap-2 text-xs">
+                    {Object.entries(replier).map(([type, count]) => {
+                      if (type !== "name" && type !== "total") {
+                        return (
+                          <div key={type} className="flex justify-between">
+                            <span className="capitalize">{type}:</span>
+                            <span>{count}</span>
+                          </div>
+                        );
+                      }
+                    })}
+                  </div>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </CardContent>
     </Card>
