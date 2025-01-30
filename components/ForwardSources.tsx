@@ -1,7 +1,8 @@
-import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card"
-import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts"
-import { Avatar } from "@/components/ui/avatar"
+import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
+import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
+import { Avatar } from "@/components/ui/avatar";
 
+// Define interfaces for type safety
 interface ChatMessage {
   forwarded_from?: string;
 }
@@ -18,26 +19,34 @@ interface ChartDataItem {
 }
 
 export default function ForwardSources({ data }: ForwardSourcesProps) {
+  
   const forwardSourceCounts = data.messages.reduce((acc: Record<string, number>, message) => {
     if (message.forwarded_from) {
-      acc[message.forwarded_from] = (acc[message.forwarded_from] || 0) + 1
+      acc[message.forwarded_from] = (acc[message.forwarded_from] || 0) + 1;
     }
-    return acc
-  }, {})
+    return acc;
+  }, {});
 
+  
   const chartData: ChartDataItem[] = Object.entries(forwardSourceCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
-    .map(([name, count]) => ({ name, count }))
+    .sort((a, b) => b[1] - a[1]) 
+    .slice(0, 10) 
+    .map(([name, count]) => ({ name, count }));
 
+  
+  const allForwardSources: ChartDataItem[] = Object.entries(forwardSourceCounts)
+    .sort((a, b) => b[1] - a[1]) // Sort by count descending
+    .map(([name, count]) => ({ name, count }));
+
+ 
   const getRandomColor = (): string => {
-    const letters = "0123456789ABCDEF"
-    let color = "#"
+    const letters = "0123456789ABCDEF";
+    let color = "#";
     for (let i = 0; i < 6; i++) {
-      color += letters[Math.floor(Math.random() * 16)]
+      color += letters[Math.floor(Math.random() * 16)];
     }
-    return color
-  }
+    return color;
+  };
 
   return (
     <Card>
@@ -50,6 +59,7 @@ export default function ForwardSources({ data }: ForwardSourcesProps) {
           channels are the most frequent origins of shared content, providing insights into the external information
           flow within the group.
         </p>
+        {/* Bar Chart */}
         <div className="mb-6 h-[300px] md:h-[400px]">
           <ResponsiveContainer width="100%" height="100%">
             <BarChart data={chartData} layout="vertical">
@@ -62,24 +72,27 @@ export default function ForwardSources({ data }: ForwardSourcesProps) {
             </BarChart>
           </ResponsiveContainer>
         </div>
+        {/* Full List of Forward Sources */}
         <div>
-          <h3 className="text-lg md:text-xl font-semibold mb-4">Top Forward Sources</h3>
-          <ul className="space-y-2">
-            {chartData.map((source, index) => (
-              <li key={index} className="flex items-center bg-secondary rounded-lg p-2 md:p-3">
-                <Avatar 
-                  className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4" 
-                  style={{ backgroundColor: getRandomColor() }}
-                >
-                  {source.name.charAt(0).toUpperCase()}
-                </Avatar>
-                <span className="font-medium truncate flex-grow">{source.name}</span>
-                <span className="ml-2 whitespace-nowrap">{source.count} forwards</span>
-              </li>
-            ))}
-          </ul>
+          <h3 className="text-lg md:text-xl font-semibold mb-4">All Forward Sources</h3>
+          <div className="max-h-[400px] overflow-y-auto border rounded-lg p-2">
+            <ul className="space-y-2">
+              {allForwardSources.map((source, index) => (
+                <li key={index} className="flex items-center bg-secondary rounded-lg p-2 md:p-3">
+                  <Avatar
+                    className="w-8 h-8 md:w-10 md:h-10 mr-2 md:mr-4"
+                    style={{ backgroundColor: getRandomColor() }}
+                  >
+                    {source.name.charAt(0).toUpperCase()}
+                  </Avatar>
+                  <span className="font-medium truncate flex-grow">{source.name}</span>
+                  <span className="ml-2 whitespace-nowrap">{source.count} forwards</span>
+                </li>
+              ))}
+            </ul>
+          </div>
         </div>
       </CardContent>
     </Card>
-  )
+  );
 }

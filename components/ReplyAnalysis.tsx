@@ -37,11 +37,11 @@ interface ReplierData {
 }
 
 export default function ReplyAnalysis({ data }: ReplyAnalysisProps) {
-  // Step 1: Count replies per user with detailed message type breakdown
+  
   const replyCounts = data.messages.reduce((acc, message) => {
     if (message.reply_to_message_id && message.from) {
       const replier = message.from;
-      // Initialize counts for the replier if not already present
+     
       if (!acc[replier]) {
         acc[replier] = {
           total: 0,
