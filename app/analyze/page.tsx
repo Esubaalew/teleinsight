@@ -13,6 +13,7 @@ import EditedMessages from "@/components/EditedMessages"
 import CommonWords from "@/components/CommonWords"
 import MessageTypeAnalysis from "@/components/MessageTypeAnalysis"
 import ReactionAnalysis from "@/components/ReactionAnalysis"
+import Manygils from "@/components/manygils"
 
 export default function AnalyzePage() {
   const [jsonData, setJsonData] = useState<JsonData | null>(null)
@@ -65,6 +66,7 @@ export default function AnalyzePage() {
 
   return (
     <div className="container mx-auto px-4 py-8">
+      <Manygils />
       <h1 className="text-3xl font-bold mb-8 text-center">Analyze Your Telegram Chat</h1>
       <div className="mb-8 flex flex-col items-center">
         <label htmlFor="file-upload" className="cursor-pointer w-full max-w-md">
@@ -84,6 +86,7 @@ export default function AnalyzePage() {
       )}
       {jsonData && !isLoading && (
         <div className="space-y-8">
+
           <ChatInfo data={jsonData} />
           <MessageTypeAnalysis data={jsonData} />
           <ReactionAnalysis data={jsonData} />

@@ -1,40 +1,47 @@
-import Link from "next/link"
-import { Github, Twitter } from "lucide-react"
+import Link from "next/link";
+import { Github, Twitter } from "lucide-react";
 
 export default function Footer() {
   return (
-    <footer className="bg-gray-800 text-white">
+    <footer className="bg-secondary text-foreground">
       <div className="container mx-auto px-4 py-8">
         <div className="flex flex-wrap justify-between items-center">
+          {/* Left Section */}
           <div className="w-full md:w-1/3 mb-6 md:mb-0">
             <h2 className="text-2xl font-bold mb-4">TeleInsight</h2>
-            <p className="text-gray-400">Unlock the power of your Telegram chats with our advanced analysis tools.</p>
+            <p className="text-muted-foreground">
+              Unlock the power of your Telegram chats with our advanced analysis tools.
+            </p>
           </div>
+
+          {/* Middle Section */}
           <div className="w-full md:w-1/3 mb-6 md:mb-0">
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
             <ul className="space-y-2">
               <li>
-                <Link href="/" className="text-gray-400 hover:text-white">
+                <Link href="/" className="text-muted-foreground hover:text-foreground">
                   Home
                 </Link>
               </li>
               <li>
-                <Link href="https://telegram.esube.com.et/analyze" className="text-gray-400 hover:text-white">
+                <Link href="/analyze" className="text-muted-foreground hover:text-foreground">
                   Analyze
                 </Link>
               </li>
               <li>
-                <Link href="/about" className="text-gray-400 hover:text-white">
+                <Link href="/about" className="text-muted-foreground hover:text-foreground">
                   About
                 </Link>
               </li>
               <li>
-                <Link href="/privacy" className="text-gray-400 hover:text-white">
+                <Link href="/privacy" className="text-muted-foreground hover:text-foreground">
                   Privacy Policy
                 </Link>
               </li>
             </ul>
           </div>
+
+          {/* Right Section */}
           <div className="w-full md:w-1/3">
             <h3 className="text-lg font-semibold mb-4">Connect</h3>
             <div className="flex space-x-4">
@@ -42,7 +49,7 @@ export default function Footer() {
                 href="https://github.com/esubaalew"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-foreground"
               >
                 <Github size={24} />
               </a>
@@ -50,14 +57,16 @@ export default function Footer() {
                 href="https://twitter.com/esubaalew"
                 target="_blank"
                 rel="noopener noreferrer"
-                className="text-gray-400 hover:text-white"
+                className="text-muted-foreground hover:text-foreground"
               >
                 <Twitter size={24} />
               </a>
             </div>
           </div>
         </div>
-        <div className="mt-8 pt-8 border-t border-gray-700 text-center text-gray-400">
+
+        {/* Bottom Section */}
+        <div className="mt-8 pt-8 border-t border-border text-center text-muted-foreground">
           <p>Made with ❤️ by Esubalew Chekol</p>
           <p className="mt-2">
             Inspired by the Telegram bot{" "}
@@ -68,6 +77,5 @@ export default function Footer() {
         </div>
       </div>
     </footer>
-  )
+  );
 }
-

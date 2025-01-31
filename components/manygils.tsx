@@ -1,7 +1,5 @@
-
-
+// components/manygils.tsx
 'use client';
-
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
@@ -11,7 +9,6 @@ const Manygils = () => {
   useEffect(() => {
     const checkScreenWidth = () => {
       if (window.innerWidth < 768) {
-
         router.push('/desktop-only');
       }
     };
@@ -24,7 +21,7 @@ const Manygils = () => {
     };
   }, [router]);
 
-  return null; 
+  return null;
 };
 
 export default Manygils;
