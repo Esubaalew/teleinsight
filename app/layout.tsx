@@ -20,6 +20,8 @@ export const metadata = {
   description:
     "Gain valuable insights from your Telegram chats with TeleInsight. Analyze message patterns, user engagement, and more.",
   keywords: "Telegram, chat analysis, message patterns, user engagement, data visualization",
+  author:"Esubalew Chekol",
+  published: "2025-01-31",
   openGraph: {
     type: "website",
     locale: "en_US",
