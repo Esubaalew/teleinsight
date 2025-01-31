@@ -8,7 +8,6 @@ import { Analytics } from "@vercel/analytics/react";
 import React, { ReactNode } from 'react';
 import Manygils from '../components/manygils';
 
-
 const poppins = Poppins({
   weight: ["400", "600", "700"],
   subsets: ["latin"],
@@ -20,8 +19,6 @@ export const metadata = {
   description:
     "Gain valuable insights from your Telegram chats with TeleInsight. Analyze message patterns, user engagement, and more.",
   keywords: "Telegram, chat analysis, message patterns, user engagement, data visualization",
-  author:"Esubalew Chekol",
-  published: "2025-01-31",
   openGraph: {
     type: "website",
     locale: "en_US",
@@ -52,6 +49,39 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <head>
         <link rel="canonical" href="https://telegram.esube.com.et" />
+      
+        <meta name="author" content="Esubalew Chekol" />
+       
+        <meta name="publication-date" content="2025-01-31" />
+  
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{
+            __html: JSON.stringify({
+              "@context": "https://schema.org",
+              "@type": "WebSite",
+              name: "TeleInsight - Powerful Telegram Chat Analyzer",
+              url: "https://telegram.esube.com.et",
+              description:
+                "Gain valuable insights from your Telegram chats with TeleInsight. Analyze message patterns, user engagement, and more.",
+              author: {
+                "@type": "Person",
+                name: "Esubalew Chekol",
+              },
+              datePublished: "2025-01-31",
+              publisher: {
+                "@type": "Organization",
+                name: "TeleInsight",
+                logo: {
+                  "@type": "ImageObject",
+                  url: "https://telegram.esube.com.et/logo.png",
+                  width: 600,
+                  height: 60,
+                },
+              },
+            }),
+          }}
+        />
       </head>
       <body className={`${poppins.variable} font-sans`}>
         <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
