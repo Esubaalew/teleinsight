@@ -1,12 +1,12 @@
-import Link from "next/link"
-import { Button } from "@/components/ui/button"
-import type { Metadata } from "next"
+import Link from "next/link";
+import { Button } from "@/components/ui/button";
+import type { Metadata } from "next";
 
 export const metadata: Metadata = {
   title: "TeleInsight - Powerful Telegram Chat Analyzer",
   description:
     "Analyze your Telegram chats with TeleInsight. Get insights on user engagement, message patterns, and more. Start your free analysis today!",
-}
+};
 
 export default function Home() {
   return (
@@ -21,6 +21,10 @@ export default function Home() {
           <Link href="/analyze">Start Analyzing</Link>
         </Button>
       </div>
+
+      {/* Add an h2 heading for the features section */}
+      <h2 className="text-2xl font-bold mt-16 mb-8 text-center">Key Features</h2>
+
       <div className="mt-16 grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
         <FeatureCard
           title="Message Analysis"
@@ -36,13 +40,13 @@ export default function Home() {
         />
       </div>
     </div>
-  )
+  );
 }
 
 // Add interface for FeatureCard props
 interface FeatureCardProps {
-  title: string
-  description: string
+  title: string;
+  description: string;
 }
 
 function FeatureCard({ title, description }: FeatureCardProps) {
@@ -51,6 +55,5 @@ function FeatureCard({ title, description }: FeatureCardProps) {
       <h3 className="text-xl font-semibold mb-2">{title}</h3>
       <p className="text-muted-foreground">{description}</p>
     </div>
-  )
+  );
 }
-
