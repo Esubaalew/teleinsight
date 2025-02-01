@@ -16,7 +16,7 @@ export default function DesktopOnlyPage() {
         initial={{ scale: 0 }}
         animate={{ scale: 1 }}
         transition={{ duration: 0.6, delay: 0.2, type: 'spring', stiffness: 120 }}
-        className="mb-6 text-6xl text-primary"
+        className="mb-6cccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccccc text-6xl text-primary"
       >
         🖥️
       </motion.div>
