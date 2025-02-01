@@ -5,7 +5,7 @@ import Header from "@/components/Header";
 import Footer from "@/components/Footer";
 import { SpeedInsights } from "@vercel/speed-insights/next";
 import { Analytics } from "@vercel/analytics/react";
-import React, { ReactNode } from 'react';
+import React, { ReactNode } from "react";
 
 const poppins = Poppins({
   weight: ["400", "600", "700"],
@@ -21,7 +21,7 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://telegram.esube.com.et",
+    url: "https://telegram.esube.com.et", // Preferred URL
     site_name: "TeleInsight",
     images: [
       {
@@ -47,12 +47,14 @@ export default function RootLayout({ children }: RootLayoutProps) {
   return (
     <html lang="en" suppressHydrationWarning>
       <head>
+        {/* Canonical URL */}
         <link rel="canonical" href="https://telegram.esube.com.et" />
-      
+        {/* Alternate URL (if desired) */}
+        <link rel="alternate" href="https://telegram.esube.tech" hreflang="en" />
+
         <meta name="author" content="Esubalew Chekol" />
-       
         <meta name="publication-date" content="2025-01-31" />
-  
+
         <script
           type="application/ld+json"
           dangerouslySetInnerHTML={{
