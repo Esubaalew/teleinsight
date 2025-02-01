@@ -4,40 +4,45 @@
 
 @layer base {
   :root {
-    --background: 0 0% 100%;
-    --foreground: 222.2 84% 4.9%;
+    /* Light Mode Colors */
+    --background: 0 0% 100%; /* White */
+    --foreground: 222.2 84% 4.9%; /* Dark (nearly black) */
     --card: 0 0% 100%;
     --card-foreground: 222.2 84% 4.9%;
     --popover: 0 0% 100%;
     --popover-foreground: 222.2 84% 4.9%;
-    --primary: 222.2 47.4% 11.2%;
-    --primary-foreground: 210 40% 98%;
-    --secondary: 210 40% 96.1%;
-    --secondary-foreground: 222.2 47.4% 11.2%;
-    --muted: 210 40% 96.1%;
-    --muted-foreground: 212 10% 45%; /* Updated: Darker gray */
+    --primary: 222.2 47.4% 11.2%; /* Dark blue/gray */
+    --primary-foreground: 210 40% 98%; /* Very light */
+    --secondary: 210 40% 96.1%; /* Almost white */
+    --secondary-foreground: 222.2 47.4% 11.2%; /* Dark */
+    --muted: 210 40% 96.1%; /* Almost white */
+    /* Updated: Darker muted text for better contrast on light backgrounds */
+    --muted-foreground: 212 10% 35%; 
     --accent: 210 40% 96.1%;
     --accent-foreground: 222.2 47.4% 11.2%;
-    --destructive: 0 84.2% 60.2%;
+    --destructive: 0 84.2% 60.2%; /* Likely a red tone */
     --destructive-foreground: 210 40% 98%;
     --border: 214.3 31.8% 91.4%;
     --input: 214.3 31.8% 91.4%;
     --ring: 222.2 84% 4.9%;
     --radius: 0.5rem;
   }
+  
   .dark {
-    --background: 222.2 84% 4.9%;
-    --foreground: 210 40% 98%;
+    /* Dark Mode Colors */
+    --background: 222.2 84% 4.9%; /* Dark background */
+    --foreground: 210 40% 98%; /* Light text */
     --card: 222.2 84% 4.9%;
     --card-foreground: 210 40% 98%;
     --popover: 222.2 84% 4.9%;
     --popover-foreground: 210 40% 98%;
     --primary: 210 40% 98%;
     --primary-foreground: 222.2 47.4% 11.2%;
-    --secondary: 217.2 32.6% 17.5%;
+    --secondary: 217.2 32.6% 17.5%; /* Very dark */
     --secondary-foreground: 210 40% 98%;
     --muted: 217.2 32.6% 17.5%;
-    --muted-foreground: 212 15% 70%; /* Updated: Lighter gray */
+    /* Updated: Lighter muted text for better contrast on dark backgrounds */
+    --muted-foreground: 212 15% 60%; 
     --accent: 217.2 32.6% 17.5%;
     --accent-foreground: 210 40% 98%;
     --destructive: 0 62.8% 30.6%;
@@ -49,11 +54,44 @@
 }
 
 @layer base {
-  * {
+  /* Apply border color to all elements */
+  *,
+  *::before,
+  *::after {
     @apply border-border;
   }
+  
+  /* Base styles for body */
   body {
-    @apply bg-background text-foreground;
+    @apply bg-[hsl(var(--background))] text-[hsl(var(--foreground))];
+    font-family: system-ui, sans-serif;
+    line-height: 1.5;
+  }
+  
+  /* Example Component: Card */
+  .card {
+    @apply bg-[hsl(var(--card))] text-[hsl(var(--card-foreground))] p-4 rounded-[var(--radius)] shadow;
+  }
+  
+  /* Example Component: Popover */
+  .popover {
+    @apply bg-[hsl(var(--popover))] text-[hsl(var(--popover-foreground))] p-4 rounded-[var(--radius)] shadow-lg;
+  }
+  
+  /* Example Button Styles */
+  .btn-primary {
+    @apply bg-[hsl(var(--primary))] text-[hsl(var(--primary-foreground))] px-4 py-2 rounded-[var(--radius)];
+  }
+  
+  .btn-secondary {
+    @apply bg-[hsl(var(--secondary))] text-[hsl(var(--secondary-foreground))] px-4 py-2 rounded-[var(--radius)];
+  }
+  
+  .btn-muted {
+    @apply bg-[hsl(var(--muted))] text-[hsl(var(--muted-foreground))] px-4 py-2 rounded-[var(--radius)];
+  }
+  
+  .btn-destructive {
+    @apply bg-[hsl(var(--destructive))] text-[hsl(var(--destructive-foreground))] px-4 py-2 rounded-[var(--radius)];
   }
 }
-
