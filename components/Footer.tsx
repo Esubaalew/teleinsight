@@ -13,7 +13,6 @@ export default function Footer() {
               Unlock the power of your Telegram chats with our advanced analysis tools.
             </p>
           </div>
-
           {/* Middle Section */}
           <div className="w-full md:w-1/3 mb-6 md:mb-0">
             <h3 className="text-lg font-semibold mb-4">Quick Links</h3>
@@ -40,7 +39,6 @@ export default function Footer() {
               </li>
             </ul>
           </div>
-
           {/* Right Section */}
           <div className="w-full md:w-1/3">
             <h3 className="text-lg font-semibold mb-4">Connect</h3>
@@ -50,6 +48,7 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground"
+                aria-label="GitHub profile of Esubalew Chekol"
               >
                 <Github size={24} />
               </a>
@@ -58,19 +57,25 @@ export default function Footer() {
                 target="_blank"
                 rel="noopener noreferrer"
                 className="text-muted-foreground hover:text-foreground"
+                aria-label="Twitter profile of Esubalew Chekol"
               >
                 <Twitter size={24} />
               </a>
             </div>
           </div>
         </div>
-
         {/* Bottom Section */}
         <div className="mt-8 pt-8 border-t border-border text-center text-muted-foreground">
           <p>Made with ❤️ by Esubalew Chekol</p>
           <p className="mt-2">
             Inspired by the Telegram bot{" "}
-            <a href="https://t.me/liyurobot" target="_blank" rel="noopener noreferrer" className="underline">
+            <a
+              href="https://t.me/liyurobot"
+              target="_blank"
+              rel="noopener noreferrer"
+              className="underline"
+              aria-label="Telegram bot @liyurobot"
+            >
               @liyurobot
             </a>
           </p>
