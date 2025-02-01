@@ -2,4 +2,4 @@ User-agent: *
 Allow: /
 
 Sitemap: https://telegram.esube.com.et/sitemap.xml
-
+Sitemap: https://telegram.esube.tech/sitemap.xml
