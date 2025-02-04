@@ -57,7 +57,9 @@ export default function AnalyzePage() {
       const reader = new FileReader()
       reader.onload = (e: ProgressEvent<FileReader>): void => {
         try {
-          const parsedJson = JSON.parse(e.target?.result as string)
+          const fileContents = e.target?.result as string
+          const parsedJson = JSON.parse(fileContents)
+
           // Validate that the JSON has a 'messages' field that is an array
           if (!parsedJson.messages || !Array.isArray(parsedJson.messages)) {
             throw new Error(
@@ -67,7 +69,10 @@ export default function AnalyzePage() {
           setJsonData(parsedJson)
         } catch (error: any) {
           console.error("Error parsing JSON:", error)
-          setError(error.message)
+          // Provide a friendly message for non-technical users.
+          setError(
+            "We couldn't read your file. Please ensure you're uploading the correct JSON file that contains your exported Telegram chat data. Make sure you export chats (private chat with any user, including bots, group chat, and channel chat) correctly."
+          )
           setJsonData(null)
         } finally {
           setIsLoading(false)
