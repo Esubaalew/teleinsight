@@ -75,7 +75,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 name: "TeleInsight",
                 logo: {
                   "@type": "ImageObject",
-                  url: "https://telegram.esube.com.et/logo.png",
+                  url: "https://telegram.esube.com.et/favicon.ico",
                   width: 600,
                   height: 60,
                 },
