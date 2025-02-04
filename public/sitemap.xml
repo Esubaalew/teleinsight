@@ -5,7 +5,7 @@
   
   <!-- Homepage -->
   <url>
-    <loc>https://telegram.esube.com.et</loc>
+    <loc>https://telegram.esubalew.et</loc>
     <lastmod>2023-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>1.0</priority>
@@ -14,7 +14,7 @@
 
   <!-- Analyze Page -->
   <url>
-    <loc>https://telegram.esube.com.et/analyze</loc>
+    <loc>https://telegram.esubalew.et/analyze</loc>
     <lastmod>2023-06-01</lastmod>
     <changefreq>weekly</changefreq>
     <priority>0.8</priority>
@@ -23,7 +23,7 @@
 
   <!-- About Page -->
   <url>
-    <loc>https://telegram.esube.com.et/about</loc>
+    <loc>https://telegram.esubalew.et/about</loc>
     <lastmod>2023-06-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
@@ -32,7 +32,7 @@
 
   <!-- Privacy Page -->
   <url>
-    <loc>https://telegram.esube.com.et/privacy</loc>
+    <loc>https://telegram.esubalew.et/privacy</loc>
     <lastmod>2023-06-01</lastmod>
     <changefreq>monthly</changefreq>
     <priority>0.7</priority>
