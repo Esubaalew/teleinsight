@@ -21,11 +21,11 @@ export const metadata = {
   openGraph: {
     type: "website",
     locale: "en_US",
-    url: "https://telegram.esube.com.et", // Preferred URL
+    url: "https://telegram.esubalew.et", // Preferred URL
     site_name: "TeleInsight",
     images: [
       {
-        url: "https://telegram.esube.com.et/og-image.png",
+        url: "https://telegram.esubalew.et/og-image.png",
         width: 1200,
         height: 630,
         alt: "TeleInsight - Powerful Telegram Chat Analyzer",
@@ -48,7 +48,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
     <html lang="en" suppressHydrationWarning>
       <head>
         {/* Canonical URL */}
-        <link rel="canonical" href="https://telegram.esube.com.et" />
+        <link rel="canonical" href="https://telegram.esubalew.et" />
         {/* Alternate URL (if desired) */}
         <link rel="alternate" href="https://telegram.esube.tech" hreflang="en" />
 
@@ -62,7 +62,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
               "@context": "https://schema.org",
               "@type": "WebSite",
               name: "TeleInsight - Powerful Telegram Chat Analyzer",
-              url: "https://telegram.esube.com.et",
+              url: "https://telegram.esubalew.et",
               description:
                 "Gain valuable insights from your Telegram chats with TeleInsight. Analyze message patterns, user engagement, and more.",
               author: {
@@ -75,7 +75,7 @@ export default function RootLayout({ children }: RootLayoutProps) {
                 name: "TeleInsight",
                 logo: {
                   "@type": "ImageObject",
-                  url: "https://telegram.esube.com.et/favicon.ico",
+                  url: "https://telegram.esubalew.et/favicon.ico",
                   width: 600,
                   height: 60,
                 },
