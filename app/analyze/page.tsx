@@ -16,9 +16,12 @@ import ReactionAnalysis from "@/components/ReactionAnalysis"
 import Manygils from "@/components/manygils"
 
 export default function AnalyzePage() {
+  // State for JSON data, loading state, and error messages
   const [jsonData, setJsonData] = useState<JsonData | null>(null)
   const [isLoading, setIsLoading] = useState(false)
+  const [error, setError] = useState<string | null>(null)
 
+  // Define the interfaces for your data
   interface Message {
     id: string
     text: string
@@ -45,17 +48,27 @@ export default function AnalyzePage() {
     count: number
   }
 
+  // Handle file upload and parse JSON
   const handleFileUpload = (event: React.ChangeEvent<HTMLInputElement>): void => {
     const file = event.target.files?.[0]
     if (file) {
       setIsLoading(true)
+      setError(null) // Reset any previous errors
       const reader = new FileReader()
       reader.onload = (e: ProgressEvent<FileReader>): void => {
         try {
-          const json: JsonData = JSON.parse(e.target?.result as string)
-          setJsonData(json)
-        } catch (error) {
+          const parsedJson = JSON.parse(e.target?.result as string)
+          // Validate that the JSON has a 'messages' field that is an array
+          if (!parsedJson.messages || !Array.isArray(parsedJson.messages)) {
+            throw new Error(
+              "Your JSON data is invalid. Please ensure you export chats (private chat with any user, including bots, group chat, and channel chat) correctly."
+            )
+          }
+          setJsonData(parsedJson)
+        } catch (error: any) {
           console.error("Error parsing JSON:", error)
+          setError(error.message)
+          setJsonData(null)
         } finally {
           setIsLoading(false)
         }
@@ -73,20 +86,32 @@ export default function AnalyzePage() {
           <div className="border-2 border-dashed border-primary rounded-lg p-8 text-center hover:bg-secondary transition duration-300">
             <Upload size={48} className="mx-auto text-primary mb-4" />
             <p className="text-lg font-semibold text-primary">Upload your Telegram chat JSON file</p>
-            <p className="text-sm text-muted-foreground mt-2">Click to browse or drag and drop your file here</p>
+            <p className="text-sm text-muted-foreground mt-2">
+              Click to browse or drag and drop your file here
+            </p>
           </div>
           <Input id="file-upload" type="file" onChange={handleFileUpload} accept=".json" className="hidden" />
         </label>
       </div>
+
+      {/* Loading Indicator */}
       {isLoading && (
         <div className="flex justify-center items-center">
           <Loader className="animate-spin text-primary mr-2" />
           <p className="text-primary">Processing your chat data...</p>
         </div>
       )}
-      {jsonData && !isLoading && (
-        <div className="space-y-8">
 
+      {/* Display error message if JSON parsing fails or validation fails */}
+      {error && (
+        <div className="text-center text-red-500 mb-4">
+          <p>Error: {error}</p>
+        </div>
+      )}
+
+      {/* Render analysis components if JSON data is valid and there's no error */}
+      {jsonData && !isLoading && !error && (
+        <div className="space-y-8">
           <ChatInfo data={jsonData} />
           <MessageTypeAnalysis data={jsonData} />
           <ReactionAnalysis data={jsonData} />
@@ -102,4 +127,3 @@ export default function AnalyzePage() {
     </div>
   )
 }
-
