@@ -1,6 +1,8 @@
+import { useState } from "react";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
 import { BarChart, Bar, XAxis, YAxis, CartesianGrid, Tooltip, Legend, ResponsiveContainer } from "recharts";
 import { Avatar } from "@/components/ui/avatar";
+import { Button } from "@/components/ui/button";
 
 interface Message {
   text?: string;
@@ -21,7 +23,8 @@ interface TopSendersProps {
 }
 
 export default function TopSenders({ data }: TopSendersProps) {
-  
+  const [showAll, setShowAll] = useState(false);
+
   const senderCounts = data.messages.reduce((acc, message) => {
     const sender = message.from;
     if (sender) {
@@ -30,16 +33,12 @@ export default function TopSenders({ data }: TopSendersProps) {
     return acc;
   }, {});
 
-  
-  const topSenders = Object.entries(senderCounts)
-    .sort((a, b) => b[1] - a[1])
-    .slice(0, 10)
-    .map(([name, count]) => ({ name, count }));
-
-  
   const allSenders = Object.entries(senderCounts)
     .sort((a, b) => b[1] - a[1])
     .map(([name, count]) => ({ name, count }));
+
+  const topSenders = allSenders.slice(0, 10);
+  const displayedSenders = showAll ? allSenders : topSenders;
 
  
   const getRandomColor = () => {
@@ -112,12 +111,12 @@ export default function TopSenders({ data }: TopSendersProps) {
   return (
     <Card>
       <CardHeader>
-        <CardTitle>Top 10 Senders</CardTitle>
+        <CardTitle>Top Senders</CardTitle>
       </CardHeader>
       <CardContent>
         <p className="mb-4">
-          This chart shows the top 10 most active users in the chat, based on the number of messages they've sent. It
-          helps identify the most engaged participants in the conversation.
+          This chart shows the most active users in the chat, based on the number of messages they've sent. It helps
+          identify the most engaged participants in the conversation.
         </p>
         {/* Bar Chart */}
         <div className="mb-6 h-[300px] md:h-[400px]">
@@ -137,7 +136,7 @@ export default function TopSenders({ data }: TopSendersProps) {
           <h3 className="text-lg md:text-xl font-semibold mb-4">All Senders List</h3>
           <div className="max-h-[400px] overflow-y-auto border rounded-lg p-2">
             <ul className="space-y-2 md:space-y-4">
-              {allSenders.map((sender, index) => {
+              {displayedSenders.map((sender, index) => {
                 const messageTypeCounts = getMessageTypeCounts(sender.name);
                 return (
                   <li key={index} className="bg-secondary rounded-lg p-2 md:p-3 text-sm md:text-base">
@@ -164,6 +163,11 @@ export default function TopSenders({ data }: TopSendersProps) {
               })}
             </ul>
           </div>
+          {allSenders.length > 10 && (
+            <Button onClick={() => setShowAll(!showAll)} variant="link" className="mt-4">
+              {showAll ? "Show Less" : "Show More"}
+            </Button>
+          )}
         </div>
       </CardContent>
     </Card>

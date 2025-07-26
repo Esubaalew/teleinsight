@@ -2,7 +2,8 @@
 
 import { useState } from "react"
 import { Input } from "@/components/ui/input"
-import { Upload, Loader } from "lucide-react"
+import { Upload, Loader, Printer } from "lucide-react"
+import { Button } from "@/components/ui/button"
 import ChatInfo from "@/components/ChatInfo"
 import TopSenders from "@/components/TopSenders"
 import ActivityAnalysis from "@/components/ActivityAnalysis"
@@ -14,12 +15,14 @@ import CommonWords from "@/components/CommonWords"
 import MessageTypeAnalysis from "@/components/MessageTypeAnalysis"
 import ReactionAnalysis from "@/components/ReactionAnalysis"
 import Manygils from "@/components/manygils"
+import PrintPreview from "@/components/PrintPreview"
 
 export default function AnalyzePage() {
   // State for JSON data, loading state, and error messages
   const [jsonData, setJsonData] = useState<JsonData | null>(null)
   const [isLoading, setIsLoading] = useState(false)
   const [error, setError] = useState<string | null>(null)
+  const [isPrintPreviewOpen, setIsPrintPreviewOpen] = useState(false)
 
   // Define the interfaces for your data
   interface Message {
@@ -85,7 +88,14 @@ export default function AnalyzePage() {
   return (
     <div className="container mx-auto px-4 py-8">
       <Manygils />
-      <h1 className="text-3xl font-bold mb-8 text-center">Analyze Your Telegram Chat</h1>
+      <div className="flex items-center justify-center mb-8">
+        <h1 className="text-3xl font-bold text-center">Analyze Your Telegram Chat</h1>
+        {jsonData && (
+          <Button variant="ghost" size="icon" onClick={() => setIsPrintPreviewOpen(true)} className="ml-4">
+            <Printer className="h-6 w-6" />
+          </Button>
+        )}
+      </div>
       <div className="mb-8 flex flex-col items-center">
         <label htmlFor="file-upload" className="cursor-pointer w-full max-w-md">
           <div className="border-2 border-dashed border-primary rounded-lg p-8 text-center hover:bg-secondary transition duration-300">
@@ -116,18 +126,21 @@ export default function AnalyzePage() {
 
       {/* Render analysis components if JSON data is valid and there's no error */}
       {jsonData && !isLoading && !error && (
-        <div className="space-y-8">
-          <ChatInfo data={jsonData} />
-          <MessageTypeAnalysis data={jsonData} />
-          <ReactionAnalysis data={jsonData} />
-          <TopSenders data={jsonData} />
-          <ActivityAnalysis data={jsonData} />
-          <ForwardedMessages data={jsonData} />
-          <ForwardSources data={jsonData} />
-          <ReplyAnalysis data={jsonData} />
-          <EditedMessages data={jsonData} />
-          <CommonWords data={jsonData} />
-        </div>
+        <>
+          <div className="space-y-8">
+            <ChatInfo data={jsonData} />
+            <MessageTypeAnalysis data={jsonData} />
+            <ReactionAnalysis data={jsonData} />
+            <TopSenders data={jsonData} />
+            <ActivityAnalysis data={jsonData} />
+            <ForwardedMessages data={jsonData} />
+            <ForwardSources data={jsonData} />
+            <ReplyAnalysis data={jsonData} />
+            <EditedMessages data={jsonData} />
+            <CommonWords data={jsonData} />
+          </div>
+          <PrintPreview data={jsonData} open={isPrintPreviewOpen} onOpenChange={setIsPrintPreviewOpen} />
+        </>
       )}
     </div>
   )
